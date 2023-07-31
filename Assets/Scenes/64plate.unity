@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 397383645}
   - component: {fileID: 397383647}
   - component: {fileID: 397383646}
+  - component: {fileID: 397383648}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -200,6 +201,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397383644}
   m_CullTransparentMesh: 1
+--- !u!114 &397383648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397383644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f7893b296358348b9d7a1748ec721d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &641777138
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,7 +476,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -501,6 +514,7 @@ GameObject:
   - component: {fileID: 1439862610}
   - component: {fileID: 1439862609}
   - component: {fileID: 1439862608}
+  - component: {fileID: 1439862611}
   m_Layer: 5
   m_Name: TileZone
   m_TagString: Untagged
@@ -540,8 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66abd6b6c9b4dbd4ebc25b040f4ab5f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 7205855288998902505, guid: 89b05d4d102af9348ac2b6474565e629, type: 3}
-  tempTile: {fileID: 0}
+  tilePrefab: {fileID: 3119078542488220855, guid: ddedc6a008e1b744e99c13520d5714d4, type: 3}
   minNum: 1
   maxNum: 5
 --- !u!114 &1439862609
@@ -582,6 +595,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439862606}
   m_CullTransparentMesh: 1
+--- !u!114 &1439862611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439862606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f7893b296358348b9d7a1748ec721d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1595808789
 GameObject:
   m_ObjectHideFlags: 0

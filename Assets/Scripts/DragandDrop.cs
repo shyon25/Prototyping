@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 
 public class DragandDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-
     RectTransform rectTrans;
     RectTransform parentRectTrans;
     Canvas rootCanvas;
@@ -21,9 +20,9 @@ public class DragandDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        this.transform.SetParent(rootCanvas.transform);
+        //this.transform.SetParent(rootCanvas.transform);
 
-        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(this.parentRectTrans, eventData.position, (this.rootCanvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : this.rootCanvas.worldCamera, out offset))
+        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(this.parentRectTrans, eventData.position, rootCanvas.worldCamera, out offset))
         {
             this.offset.x = this.offset.x - this.transform.localPosition.x;
             this.offset.y = this.offset.y - this.transform.localPosition.y;
@@ -41,7 +40,7 @@ public class DragandDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         Vector2 OutLocalPos = Vector2.zero;
 
-        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(this.parentRectTrans, eventData.position, (this.rootCanvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : this.rootCanvas.worldCamera, out OutLocalPos))
+        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(this.parentRectTrans, eventData.position, rootCanvas.worldCamera, out OutLocalPos))
         {
             this.transform.localPosition = OutLocalPos - offset;
         }
