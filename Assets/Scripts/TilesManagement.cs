@@ -32,65 +32,132 @@ public class tileDatabase
 
 public class tileChunk
 {
-    public List<GameObject> tiles;
+    public Vector2 anchorMin;
+    public Vector2 anchorMax;
+    public string name;
+    public Vector2 pos;
+    public Color color;
+
+    public List<tile> tiles;
+
+    public tileChunk()
+    {
+        tiles = new List<tile>();
+    }
     
-    public void addTile(GameObject tile)
+    public void addTile(tile tile)
     {
         tiles.Add(tile);
     }
-    public GameObject getTile(int index)
+    public tile getTile(int index)
     {
         return tiles[index];
     }
 }
 
+public class tile
+{
+    public Vector2 anchorMin;
+    public Vector2 anchorMax;
+    public string name;
+    public Vector2 pos;
+    public Color color;
+    public int number;
+}
+
 public class TilesManagement : MonoBehaviour
 {
-    GameObject tempTile;
+    tile tempTile;
     tileChunk tempChunk;
+    GameObject tempObject;
 
     [SerializeField]
     public tileDatabase wholeTiles;
-    public GameObject tilePrefab;
+    public GameObject chunkPrefab;
+    public GameObject tileZone;
     public int minNum;
     public int maxNum;
 
     void Start()
     {
         wholeTiles = new tileDatabase();
-        generateTile(4, 4);
+        tileInitialize(4, 4);
+        drawTile(4, 4);
     }
 
-
-
-    public void generateTile(int row, int column)
+    public void tileInitialize(int row, int column)
     {
         for (int j = 0; j < column; j++)
         {
             for (int i = 0; i < row; i++)
             {
-                tempTile = Instantiate(tilePrefab, this.transform);
-                tempTile.GetComponent<RectTransform>().anchorMin = new Vector2(i * (1f/row), j * (1f/column));
-                tempTile.GetComponent<RectTransform>().anchorMax = new Vector2((i + 1) * (1f / row), (j + 1) * (1f / row));
-                tempTile.name = "TileChunk" + j + i;
-                tempTile.GetComponent<TileChunkComponents>().pos = new Vector2(i, j);
-                tempTile.GetComponent<TileChunkComponents>().color = Color.gray;
-                tempTile.GetComponent<Image>().color = tempTile.GetComponent<TileChunkComponents>().color;
+                tempChunk = new tileChunk();
+                tempChunk.anchorMax = new Vector2((i + 1) * (1f / row), (j + 1) * (1f / row));
+                tempChunk.anchorMin = new Vector2(i * (1f / row), j * (1f / row));
+                tempChunk.name = "TileChunk" + j + i;
+                tempChunk.pos = new Vector2(i, j);
+                tempChunk.color = Color.gray;
 
-                initializingInnerTiles(tempTile);
-                
+                for(int l = 0; l < 2; l++)
+                {
+                    for (int k = 0; k < 2; k++)
+                    {
+                        tempTile = new tile();
+                        tempTile.anchorMax = new Vector2((i + 1) * (1f / 2), (j + 1) * (1f / 2));
+                        tempTile.anchorMin = new Vector2(i * (1f / 2), j * (1f / 2));
+                        tempTile.name = "Tile" + l + k;
+                        tempTile.pos = new Vector2(k, l);
+                        tempTile.color = randomColor();
+                        tempTile.number = Random.Range(minNum, maxNum + 1);
+                        tempChunk.addTile(tempTile);
+                    }
+                }
+
+                if(i == 0)
+                {
+                    wholeTiles.addChunk_newLine(tempChunk);
+                }
+                else
+                {
+                    wholeTiles.addChunk_normal(tempChunk);
+                }
             }
         }
     }
-    public void initializingInnerTiles(GameObject tileChunk)
+
+    public void drawTile(int row, int column)
     {
-        for(int i = 0; i < 4; i++)
+        for (int j = 0; j < column; j++)
         {
-            tileChunk.transform.GetChild(i).GetComponent<TileComponents>().number = Random.Range(minNum, maxNum + 1);
-            tileChunk.transform.GetChild(i).transform.GetChild(0).GetComponent<TMP_Text>().text = tileChunk.transform.GetChild(i).GetComponent<TileComponents>().number.ToString();
-            tileChunk.transform.GetChild(i).GetComponent<TileComponents>().color = randomColor();
+            for (int i = 0; i < row; i++)
+            {
+                tempObject = Instantiate(chunkPrefab);
+                tempObject.transform.SetParent(tileZone.transform);
+                tempObject.GetComponent<RectTransform>().anchorMin = wholeTiles.chunks[i][j].anchorMin;
+                tempObject.GetComponent<RectTransform>().anchorMax = wholeTiles.chunks[i][j].anchorMax;
+                tempObject.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
+                tempObject.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+
+                tempObject.name = wholeTiles.chunks[i][j].name;
+                tempObject.GetComponent<TileChunkComponents>().pos = wholeTiles.chunks[i][j].pos;
+                tempObject.GetComponent<TileChunkComponents>().color = wholeTiles.chunks[i][j].color;
+                tempObject.GetComponent<Image>().color = tempObject.GetComponent<TileChunkComponents>().color;
+
+                initializingInnerTiles(tempObject, i, j);
+
+            } 
+        }
+    }
+    public void initializingInnerTiles(GameObject tileChunk, int row, int column)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            tileChunk.transform.GetChild(i).GetComponent<TileComponents>().number = wholeTiles.chunks[row][column].getTile(i).number;
+            tileChunk.transform.GetChild(i).transform.GetChild(0).GetComponent<TMP_Text>().text = wholeTiles.chunks[row][column].getTile(i).number.ToString();
+            tileChunk.transform.GetChild(i).GetComponent<TileComponents>().color = wholeTiles.chunks[row][column].getTile(i).color;
             tileChunk.transform.GetChild(i).GetComponent<Image>().color = tileChunk.transform.GetChild(i).GetComponent<TileComponents>().color;
         }
+
     }
 
     public Color randomColor()
