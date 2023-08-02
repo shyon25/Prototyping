@@ -554,7 +554,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66abd6b6c9b4dbd4ebc25b040f4ab5f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 3119078542488220855, guid: ddedc6a008e1b744e99c13520d5714d4, type: 3}
+  chunkPrefab: {fileID: 3119078542488220855, guid: ddedc6a008e1b744e99c13520d5714d4, type: 3}
+  tileZone: {fileID: 1439862606}
   minNum: 1
   maxNum: 5
 --- !u!114 &1439862609

@@ -1,37 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileChunkComponents : MonoBehaviour
 {
+    TilesManagement tileManager;
+    tileChunk myChunk;
+    GameObject myChunkObject;
+    List<tile> newTiles;
+
     [SerializeField]
     public Vector2 pos;
     public Color color;
 
-    public void rotateTiles()
+    private void Start()
     {
-        Vector2 tempMax = new Vector2(0, 0);
-        Vector2 tempMin = new Vector2(0, 0);
-        Vector2 tempPos = new Vector2(0, 0);
-
-        tempMax = this.transform.GetChild(0).GetComponent<RectTransform>().anchorMax;
-        tempMin = this.transform.GetChild(0).GetComponent<RectTransform>().anchorMin;
-        tempPos = this.transform.GetChild(0).GetComponent<TileComponents>().pos;
-
-        moveTile(1, 0);
-        moveTile(3, 1);
-        moveTile(2, 3);
-       
-        this.transform.GetChild(2).GetComponent<RectTransform>().anchorMax = tempMax;
-        this.transform.GetChild(2).GetComponent<RectTransform>().anchorMin = tempMin;
-        this.transform.GetChild(2).GetComponent<TileComponents>().pos = tempPos;
-
+        tileManager = GameObject.Find("TileZone").GetComponent<TilesManagement>();
     }
 
-    public void moveTile(int depart, int arrive)
+    public void rotateTiles()
     {
-        this.transform.GetChild(arrive).GetComponent<RectTransform>().anchorMax = this.transform.GetChild(depart).GetComponent<RectTransform>().anchorMax;
-        this.transform.GetChild(arrive).GetComponent<RectTransform>().anchorMin = this.transform.GetChild(depart).GetComponent<RectTransform>().anchorMin;
-        this.transform.GetChild(arrive).GetComponent<TileComponents>().pos = this.transform.GetChild(depart).GetComponent<TileComponents>().pos;
+        myChunk = tileManager.wholeTiles.chunks[(int)pos.x][(int)pos.y];
+
+        newTiles = new List<tile>();
+        newTiles.Add(myChunk.tiles[2]);
+        newTiles.Add(myChunk.tiles[0]);
+        newTiles.Add(myChunk.tiles[3]);
+        newTiles.Add(myChunk.tiles[1]);
+        myChunk.tiles = newTiles;
+
+        myChunkObject = myChunk.findMyChunk();
+
+        for(int i = 0; i < newTiles.Count; i++)
+        {
+            myChunkObject.transform.GetChild(i).GetComponent<TileComponents>().number = newTiles[i].number;
+            myChunkObject.transform.GetChild(i).transform.GetChild(0).GetComponent<TMP_Text>().text = newTiles[i].number.ToString();
+            myChunkObject.transform.GetChild(i).GetComponent<TileComponents>().color = newTiles[i].color;
+            myChunkObject.transform.GetChild(i).GetComponent<Image>().color = newTiles[i].color;
+        }
+
     }
 }

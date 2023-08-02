@@ -53,6 +53,12 @@ public class tileChunk
     {
         return tiles[index];
     }
+
+    public GameObject findMyChunk()
+    {
+        GameObject myChunk = GameObject.Find("TileChunk" + pos.x + pos.y);
+        return myChunk;
+    }
 }
 
 public class tile
@@ -87,14 +93,14 @@ public class TilesManagement : MonoBehaviour
 
     public void tileInitialize(int row, int column)
     {
-        for (int j = 0; j < column; j++)
+        for (int i = 0; i < row; i++)
         {
-            for (int i = 0; i < row; i++)
+            for (int j = 0; j < column; j++)
             {
                 tempChunk = new tileChunk();
                 tempChunk.anchorMax = new Vector2((i + 1) * (1f / row), (j + 1) * (1f / row));
                 tempChunk.anchorMin = new Vector2(i * (1f / row), j * (1f / row));
-                tempChunk.name = "TileChunk" + j + i;
+                tempChunk.name = "TileChunk" + i + j;
                 tempChunk.pos = new Vector2(i, j);
                 tempChunk.color = Color.gray;
 
@@ -105,7 +111,7 @@ public class TilesManagement : MonoBehaviour
                         tempTile = new tile();
                         tempTile.anchorMax = new Vector2((i + 1) * (1f / 2), (j + 1) * (1f / 2));
                         tempTile.anchorMin = new Vector2(i * (1f / 2), j * (1f / 2));
-                        tempTile.name = "Tile" + l + k;
+                        tempTile.name = "Tile" + k + l;
                         tempTile.pos = new Vector2(k, l);
                         tempTile.color = randomColor();
                         tempTile.number = Random.Range(minNum, maxNum + 1);
@@ -113,7 +119,7 @@ public class TilesManagement : MonoBehaviour
                     }
                 }
 
-                if(i == 0)
+                if(j == 0)
                 {
                     wholeTiles.addChunk_newLine(tempChunk);
                 }
@@ -150,7 +156,7 @@ public class TilesManagement : MonoBehaviour
     }
     public void initializingInnerTiles(GameObject tileChunk, int row, int column)
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 4; i++)
         {
             tileChunk.transform.GetChild(i).GetComponent<TileComponents>().number = wholeTiles.chunks[row][column].getTile(i).number;
             tileChunk.transform.GetChild(i).transform.GetChild(0).GetComponent<TMP_Text>().text = wholeTiles.chunks[row][column].getTile(i).number.ToString();
