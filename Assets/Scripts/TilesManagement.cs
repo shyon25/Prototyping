@@ -188,6 +188,14 @@ public class TilesManagement : MonoBehaviour
         return resultColor;
     }
 
+    public void testSwitching()
+    {
+        GameObject first = GameObject.Find("TileChunk00");
+        GameObject second = GameObject.Find("TileChunk01");
+
+        first.GetComponent<TileChunkComponents>().switchChunk(second);
+    }
+
 }
 
 
