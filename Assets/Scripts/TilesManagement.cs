@@ -83,10 +83,12 @@ public class TilesManagement : MonoBehaviour
     public GameObject tileZone;
     public int minNum;
     public int maxNum;
+    public GameObject selectingFrame;
 
     void Start()
     {
         wholeTiles = new tileDatabase();
+        selectingFrame.SetActive(false);
         tileInitialize(4, 4);
         drawTile(4, 4);
     }
@@ -188,14 +190,15 @@ public class TilesManagement : MonoBehaviour
         return resultColor;
     }
 
-    public void testSwitching()
+    public void activateFrame()
     {
-        GameObject first = GameObject.Find("TileChunk00");
-        GameObject second = GameObject.Find("TileChunk01");
-
-        first.GetComponent<TileChunkComponents>().switchChunk(second);
+        selectingFrame.SetActive(true);
     }
 
+    public void disactivateFrame()
+    {
+        selectingFrame.SetActive(false);
+    }
 }
 
 
