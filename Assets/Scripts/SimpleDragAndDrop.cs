@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SimpleDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class SimpleDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler, IDropHandler
 {
     public TileChunkComponents myChunkComponent;
 
@@ -26,5 +26,10 @@ public class SimpleDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUpH
     public void OnDrag(PointerEventData eventData)
     {
         
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        eventData.pointerDrag.gameObject.GetComponent<TileChunkComponents>().switchChunk(this.gameObject);
     }
 }

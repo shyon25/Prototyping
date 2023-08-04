@@ -46,7 +46,6 @@ public class TileChunkComponents : MonoBehaviour
     }
     public void selectMe()
     {
-        Debug.Log("selected " + selected + " select Me");
         if(selected == false)
         {
             selected = true;
@@ -58,7 +57,6 @@ public class TileChunkComponents : MonoBehaviour
 
     public void dropMe()
     {
-        Debug.Log("selected " + selected + " drop Me");
         if (selected == true)
         {
             selected = false;
@@ -75,10 +73,13 @@ public class TileChunkComponents : MonoBehaviour
         myChunk = tileManager.wholeTiles.chunks[(int)pos.x][(int)pos.y];
         yourChunk = tileManager.wholeTiles.chunks[(int)yourPos.x][(int)yourPos.y];
 
-        List<tile> tempTile = myChunk.tiles;
+        tileManager.wholeTiles.chunks[(int)pos.x][(int)pos.y] = yourChunk;
+        tileManager.wholeTiles.chunks[(int)yourPos.x][(int)yourPos.y] = myChunk;
+        
+        List <tile> tempTile = myChunk.tiles;
         myChunk.tiles = yourChunk.tiles;
         yourChunk.tiles = tempTile;
-
+        
         string tempName = this.gameObject.name;
         this.gameObject.name = otherChunk.gameObject.name;
         otherChunk.gameObject.name = tempName;
