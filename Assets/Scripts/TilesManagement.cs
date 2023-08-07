@@ -69,6 +69,12 @@ public class tile
     public Vector2 pos;
     public Color color;
     public int number;
+    public bool isDestroyed;
+
+    public tile()
+    {
+        isDestroyed = false;
+    }
 }
 
 public class TilesManagement : MonoBehaviour
@@ -133,6 +139,16 @@ public class TilesManagement : MonoBehaviour
         }
     }
 
+    public void destoryTile(Vector2 chunkPos, Vector2 tilePos)
+    {
+        tileChunk currentChunk = wholeTiles.chunks[(int)chunkPos.x][(int)chunkPos.y];
+        tile currentTile = currentChunk.getTile((int)(tilePos.x * 2 + tilePos.y));
+
+        currentTile.isDestroyed = true;
+        currentChunk.findMyChunk().transform.GetChild((int)(tilePos.x * 2 + tilePos.y)).gameObject.SetActive(false);
+
+    }
+
     public void drawTile(int row, int column)
     {
         for (int j = 0; j < column; j++)
@@ -162,6 +178,7 @@ public class TilesManagement : MonoBehaviour
         {
             tileChunk.transform.GetChild(i).GetComponent<TileComponents>().number = wholeTiles.chunks[row][column].getTile(i).number;
             tileChunk.transform.GetChild(i).transform.GetChild(0).GetComponent<TMP_Text>().text = wholeTiles.chunks[row][column].getTile(i).number.ToString();
+            tileChunk.transform.GetChild(i).GetComponent<TileComponents>().pos = wholeTiles.chunks[row][column].getTile(i).pos;
             tileChunk.transform.GetChild(i).GetComponent<TileComponents>().color = wholeTiles.chunks[row][column].getTile(i).color;
             tileChunk.transform.GetChild(i).GetComponent<Image>().color = tileChunk.transform.GetChild(i).GetComponent<TileComponents>().color;
         }

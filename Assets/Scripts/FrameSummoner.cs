@@ -50,35 +50,4 @@ public class FrameSummoner : MonoBehaviour
         }
 
     }
-
-    /*
-    public bool IsPointerOverUI()
-    {
-        bool result = false;
-
-        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
-
-        pointerEventData.position = Input.mousePosition;
-
-        List<RaycastResult> results = new List<RaycastResult>();
-
-        EventSystem.current.RaycastAll(pointerEventData, results);
-
-        for(int i = 0; i < results.Count; i++)
-        {
-            if (results[i].gameObject.layer == LayerMask.NameToLayer("UI"))
-                result = true;
-            else
-                result = false;
-        }
-
-
-        return result;
-    }
-    */
-
-    public void moveFrame()
-    {
-
-    }
 }

@@ -180,6 +180,7 @@ MonoBehaviour:
   coloredPoint: []
   frame: {fileID: 936191390}
   color: {r: 0, g: 0, b: 0, a: 0}
+  myStampNumber: 3
 --- !u!114 &24854885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,6 +332,7 @@ MonoBehaviour:
   coloredPoint: []
   frame: {fileID: 936191390}
   color: {r: 0, g: 0, b: 0, a: 0}
+  myStampNumber: 4
 --- !u!114 &231422939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1606,6 +1608,7 @@ MonoBehaviour:
   coloredPoint: []
   frame: {fileID: 936191390}
   color: {r: 0, g: 0, b: 0, a: 0}
+  myStampNumber: 2
 --- !u!114 &2044988030
 MonoBehaviour:
   m_ObjectHideFlags: 0

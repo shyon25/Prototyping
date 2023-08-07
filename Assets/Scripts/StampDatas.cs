@@ -9,6 +9,7 @@ public class StampDatas : MonoBehaviour
     public List<Vector2> coloredPoint;
     public GameObject frame;
     public Color color;
+    public int myStampNumber;
 
     int randomPointx, randomPointy;
 
@@ -31,9 +32,17 @@ public class StampDatas : MonoBehaviour
 
     public void changeFrame()
     {
-        //bool currentActivateState = frame.GetComponent<FrameComponents>().isActivate;
-        //frame.GetComponent<FrameComponents>().isActivate = !currentActivateState;
-        frame.GetComponent<FrameComponents>().isActivate = true;
+        if(myStampNumber == frame.GetComponent<FrameComponents>().currentStampNumber)
+        {
+            bool currentActivateState = frame.GetComponent<FrameComponents>().isActivate;
+            frame.GetComponent<FrameComponents>().isActivate = !currentActivateState;
+        }
+        else
+        {
+            frame.GetComponent<FrameComponents>().isActivate = true;
+            frame.GetComponent<FrameComponents>().currentStampNumber = myStampNumber;
+            frame.GetComponent<FrameComponents>().coloredPoint = coloredPoint;
+        }
 
         frame.GetComponent<FrameComponents>().changeColors(coloredPoint, color);
     }

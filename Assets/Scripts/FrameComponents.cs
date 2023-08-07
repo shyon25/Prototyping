@@ -8,6 +8,8 @@ public class FrameComponents : MonoBehaviour
     public float selectingColor;
     public float nonSelectingColor;
     public bool isActivate;
+    public int currentStampNumber;
+    public List<Vector2> coloredPoint;
 
     List<List<GameObject>> frameTiles;
     private void Start()
@@ -24,6 +26,8 @@ public class FrameComponents : MonoBehaviour
         }
 
         isActivate = false;
+        currentStampNumber = 0;
+        coloredPoint = new List<Vector2>();
     }
 
     public void changeColors(List<Vector2> points, Color color)
@@ -55,9 +59,5 @@ public class FrameComponents : MonoBehaviour
         }
     }
 
-    public void moveFrame()
-    {
-
-    }
 
 }
