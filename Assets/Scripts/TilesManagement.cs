@@ -75,6 +75,7 @@ public class tile
     {
         isDestroyed = false;
     }
+
 }
 
 public class TilesManagement : MonoBehaviour
@@ -112,9 +113,9 @@ public class TilesManagement : MonoBehaviour
                 tempChunk.pos = new Vector2(i, j);
                 tempChunk.color = Color.gray;
 
-                for(int l = 0; l < 2; l++)
+                for (int k = 0; k < 2; k++)
                 {
-                    for (int k = 0; k < 2; k++)
+                    for (int l = 0; l < 2; l++)
                     {
                         tempTile = new tile();
                         tempTile.anchorMax = new Vector2((i + 1) * (1f / 2), (j + 1) * (1f / 2));

@@ -438,7 +438,6 @@ GameObject:
   - component: {fileID: 397383645}
   - component: {fileID: 397383647}
   - component: {fileID: 397383646}
-  - component: {fileID: 397383648}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -509,18 +508,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397383644}
   m_CullTransparentMesh: 1
---- !u!114 &397383648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397383644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1f7893b296358348b9d7a1748ec721d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &572639843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,56 +1057,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1343410431386892439, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: selectingColor
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1343410431386892439, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: nonSelectingColor
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2894152012897317776, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
+      propertyPath: tileManagement
+      value: 
+      objectReference: {fileID: 1439862608}
     - target: {fileID: 3119078542488220855, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
       propertyPath: m_Name
       value: TileSelectFrame
-      objectReference: {fileID: 0}
-    - target: {fileID: 3119078542488220855, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4592505105083878381, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4646100893046328624, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684815627398857575, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5025542113301879821, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8137932581403758750, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8149572904141625115, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8315859972818827743, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8664614012891019652, guid: 9000cbb5dd16c254eae70a229122b74b, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

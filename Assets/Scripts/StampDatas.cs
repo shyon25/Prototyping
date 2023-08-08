@@ -34,18 +34,30 @@ public class StampDatas : MonoBehaviour
     {
         if(myStampNumber == frame.GetComponent<FrameComponents>().currentStampNumber)
         {
-            bool currentActivateState = frame.GetComponent<FrameComponents>().isActivate;
-            frame.GetComponent<FrameComponents>().isActivate = !currentActivateState;
+            offFrame();
         }
         else
         {
-            frame.GetComponent<FrameComponents>().isActivate = true;
-            frame.GetComponent<FrameComponents>().currentStampNumber = myStampNumber;
-            frame.GetComponent<FrameComponents>().coloredPoint = coloredPoint;
+            switchFrame();
         }
 
+    }
+
+    public void offFrame()
+    {
+        bool currentActivateState = frame.GetComponent<FrameComponents>().isActivate;
+        frame.GetComponent<FrameComponents>().isActivate = !currentActivateState;
         frame.GetComponent<FrameComponents>().changeColors(coloredPoint, color);
     }
+
+    public void switchFrame()
+    {
+        frame.GetComponent<FrameComponents>().isActivate = true;
+        frame.GetComponent<FrameComponents>().currentStampNumber = myStampNumber;
+        frame.GetComponent<FrameComponents>().coloredPoint = coloredPoint;
+        frame.GetComponent<FrameComponents>().changeColors(coloredPoint, color);
+    }
+
     public Color randomColor()
     {
         Color resultColor = new Color();
