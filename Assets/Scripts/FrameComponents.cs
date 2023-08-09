@@ -102,7 +102,7 @@ public class FrameComponents : MonoBehaviour
                 {
                     Vector2 tempChunkVector = new Vector2(sideTile(coloredPoint[i], out error).transform.parent.GetComponent<TileChunkComponents>().pos.x, sideTile(coloredPoint[i], out error).transform.parent.GetComponent<TileChunkComponents>().pos.y);
                     Vector2 tempTileVector = new Vector2(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.x, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.y);
-                    tileManagement.destoryTile(tempChunkVector, tempTileVector);
+                    tileManagement.destroyTiles(tempChunkVector, tempTileVector);
                 }
             }
         }
