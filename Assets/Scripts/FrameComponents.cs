@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -72,15 +73,26 @@ public class FrameComponents : MonoBehaviour
 
     public void attackTile()
     {
+        int error = 0;
         if(coloredPoint.Count > 0)
         {
+            for(int i = 0; i < coloredPoint.Count; i++)
+            {
+                sideTile(coloredPoint[i], out error); 
+                if (error == -1)
+                {
+                    Debug.Log("I will not attack");
+                    return;
+                }
+            }
+            
             List<int> combination = new List<int>();
 
             for (int i = 0; i < coloredPoint.Count; i++)
             {
-                if (sideTile(coloredPoint[i]).GetComponent<TileComponents>().color == currentColor)
+                if (sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().color == currentColor)
                 {
-                    combination.Add(sideTile(coloredPoint[i]).GetComponent<TileComponents>().number);
+                    combination.Add(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().number);
                 }
             }
 
@@ -88,8 +100,8 @@ public class FrameComponents : MonoBehaviour
             {
                 for (int i = 0; i < coloredPoint.Count; i++)
                 {
-                    Vector2 tempChunkVector = new Vector2(sideTile(coloredPoint[i]).transform.parent.GetComponent<TileChunkComponents>().pos.x, sideTile(coloredPoint[i]).transform.parent.GetComponent<TileChunkComponents>().pos.y);
-                    Vector2 tempTileVector = new Vector2(sideTile(coloredPoint[i]).GetComponent<TileComponents>().pos.x, sideTile(coloredPoint[i]).GetComponent<TileComponents>().pos.y);
+                    Vector2 tempChunkVector = new Vector2(sideTile(coloredPoint[i], out error).transform.parent.GetComponent<TileChunkComponents>().pos.x, sideTile(coloredPoint[i], out error).transform.parent.GetComponent<TileChunkComponents>().pos.y);
+                    Vector2 tempTileVector = new Vector2(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.x, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.y);
                     tileManagement.destoryTile(tempChunkVector, tempTileVector);
                 }
             }
@@ -122,29 +134,30 @@ public class FrameComponents : MonoBehaviour
         return isExist;
     }
 
-    public GameObject sideTile(Vector2 frameTilePos)
+    public GameObject sideTile(Vector2 frameTilePos, out int error)
     {
+        error = 0;
         whereIsTheTile currentPos = new whereIsTheTile(currentChunkPos, currentTilePos);
 
         if(frameTilePos.x == 0)
         {
-            currentPos.goLeft();
+            error = currentPos.goLeft();
         }
         if(frameTilePos.y == 0)
         {
-            currentPos.goDown();
+            error = currentPos.goDown();
         }
         if(frameTilePos.x == 2)
         {
-            currentPos.goRight();
+            error = currentPos.goRight();
         }
         if(frameTilePos.y == 2)
         {
-            currentPos.goUp();
+            error = currentPos.goUp();
         }
-
-        GameObject nowChunk = tileManagement.wholeTiles.chunks[(int)currentChunkPos.x][(int)currentChunkPos.y].findMyChunk();
-        GameObject nowTile = nowChunk.transform.GetChild((int)(currentTilePos.x * 2 + currentTilePos.y)).gameObject;
+        
+        GameObject nowChunk = tileManagement.wholeTiles.chunks[(int)currentPos.chunkPos.x][(int)currentPos.chunkPos.y].findMyChunk();
+        GameObject nowTile = nowChunk.transform.GetChild((int)(currentPos.tilePos.x * 2 + currentPos.tilePos.y)).gameObject;
 
         return nowTile;
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,6 +42,14 @@ public class TileChunkComponents : MonoBehaviour
             myChunkObject.transform.GetChild(i).transform.GetChild(0).GetComponent<TMP_Text>().text = newTiles[i].number.ToString();
             myChunkObject.transform.GetChild(i).GetComponent<TileComponents>().color = newTiles[i].color;
             myChunkObject.transform.GetChild(i).GetComponent<Image>().color = newTiles[i].color;
+            if (myChunk.tiles[i].isDestroyed == false)
+            {
+                myChunkObject.transform.GetChild(i).gameObject.SetActive(true);
+            }
+            else
+            {
+                myChunkObject.transform.GetChild(i).gameObject.SetActive(false);
+            }
         }
 
     }
@@ -72,10 +81,10 @@ public class TileChunkComponents : MonoBehaviour
 
         myChunk = tileManager.wholeTiles.chunks[(int)pos.x][(int)pos.y];
         yourChunk = tileManager.wholeTiles.chunks[(int)yourPos.x][(int)yourPos.y];
-
+        /*
         tileManager.wholeTiles.chunks[(int)pos.x][(int)pos.y] = yourChunk;
         tileManager.wholeTiles.chunks[(int)yourPos.x][(int)yourPos.y] = myChunk;
-        
+        */
         List <tile> tempTile = myChunk.tiles;
         myChunk.tiles = yourChunk.tiles;
         yourChunk.tiles = tempTile;
@@ -91,6 +100,9 @@ public class TileChunkComponents : MonoBehaviour
         otherChunk.GetComponent<RectTransform>().anchorMax = tempAnchorMax;
         otherChunk.GetComponent<RectTransform>().anchorMin = tempAnchorMin;
 
+        Vector2 tempPos = this.GetComponent<TileChunkComponents>().pos;
+        this.GetComponent<TileChunkComponents>().pos = otherChunk.GetComponent<TileChunkComponents>().pos;
+        otherChunk.GetComponent<TileChunkComponents>().pos = tempPos;
 
     }
 }
