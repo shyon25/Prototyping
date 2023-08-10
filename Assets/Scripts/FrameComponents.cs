@@ -15,6 +15,7 @@ public class FrameComponents : MonoBehaviour
     public Vector2 currentChunkPos;
     public Color currentColor;
     public TilesManagement tileManagement;
+    public ScoreManagement scoreManagement;
 
     List<List<GameObject>> frameTiles;
     private void Start()
@@ -104,6 +105,7 @@ public class FrameComponents : MonoBehaviour
                     Vector2 tempTileVector = new Vector2(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.x, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.y);
                     tileManagement.destroyTiles(tempChunkVector, tempTileVector);
                 }
+                scoreManagement.addBlock(currentColor, combination[0], coloredPoint.Count);
             }
         }
         

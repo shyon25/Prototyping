@@ -91,6 +91,7 @@ public class TilesManagement : MonoBehaviour
     public int minNum;
     public int maxNum;
     public GameObject selectingFrame;
+    public ScoreManagement scoreManagement;
 
     void Start()
     {
@@ -169,7 +170,6 @@ public class TilesManagement : MonoBehaviour
                 tempObject.GetComponent<Image>().color = tempObject.GetComponent<TileChunkComponents>().color;
 
                 initializingInnerTiles(tempObject, i, j);
-
             } 
         }
     }
@@ -183,7 +183,6 @@ public class TilesManagement : MonoBehaviour
             tileChunk.transform.GetChild(i).GetComponent<TileComponents>().color = wholeTiles.chunks[row][column].getTile(i).color;
             tileChunk.transform.GetChild(i).GetComponent<Image>().color = tileChunk.transform.GetChild(i).GetComponent<TileComponents>().color;
         }
-
     }
 
     public Color randomColor()
@@ -223,13 +222,18 @@ public class TilesManagement : MonoBehaviour
     {
         int chunkCount = tileZone.transform.childCount;
 
-        for (int i = 0; i < chunkCount; i++)
+        if(scoreManagement.initialResetNumber > 0)
         {
-            GameObject.Destroy(tileZone.transform.GetChild(i).gameObject);
+            for (int i = 0; i < chunkCount; i++)
+            {
+                GameObject.Destroy(tileZone.transform.GetChild(i).gameObject);
+            }
+            wholeTiles = new tileDatabase();
+            tileInitialize(4, 4);
+            drawTile(4, 4);
+            scoreManagement.useReset();
         }
-        wholeTiles = new tileDatabase();
-        tileInitialize(4, 4);
-        drawTile(4, 4);
+        
     }
 
     public void fillTiles()
