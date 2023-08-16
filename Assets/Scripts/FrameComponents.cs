@@ -3,6 +3,20 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Linq;
+
+public class tileInfo
+{
+    public int number;
+    public Color color;
+
+    public tileInfo(int n, Color c)
+    {
+        number = n;
+        color = c;
+    }
+}
 
 public class FrameComponents : MonoBehaviour
 {
@@ -42,11 +56,12 @@ public class FrameComponents : MonoBehaviour
     public void changeColors(List<Vector2> points, Color color)
     {
         GameObject currentTile;
-        Color tempColor = color;
+        //Color tempColor = color;
+        Color tempColor = Color.white;
 
         resetColors();
 
-        currentColor = tempColor;
+        //currentColor = tempColor;
 
         coloredPoint = points;
 
@@ -87,55 +102,157 @@ public class FrameComponents : MonoBehaviour
                 }
             }
             
-            List<int> combination = new List<int>();
+            List<tileInfo> combination = new List<tileInfo>();
 
             for (int i = 0; i < coloredPoint.Count; i++)
             {
-                if (sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().color == currentColor)
-                {
-                    combination.Add(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().number);
-                }
+                combination.Add(new tileInfo(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().number, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().color));
             }
 
-            if (combo(combination))
+            if (combo(combination, coloredPoint.Count).Count != 0)
             {
+                if (canIRecord())
+                {
+                    scoreManagement.addBlock(combo(combination, coloredPoint.Count));
+                }
                 for (int i = 0; i < coloredPoint.Count; i++)
                 {
                     Vector2 tempChunkVector = new Vector2(sideTile(coloredPoint[i], out error).transform.parent.GetComponent<TileChunkComponents>().pos.x, sideTile(coloredPoint[i], out error).transform.parent.GetComponent<TileChunkComponents>().pos.y);
                     Vector2 tempTileVector = new Vector2(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.x, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.y);
                     tileManagement.destroyTiles(tempChunkVector, tempTileVector);
                 }
-                scoreManagement.addBlock(currentColor, combination[0], coloredPoint.Count);
+                
             }
         }
         
     }
 
-    public bool combo(List<int> combination)
+    public bool canIRecord()
     {
-        bool isExist = true;
-        int firstNumber = 0;
+        bool result = true;
+        int error = 0;
 
-        if(combination.Count > 0)
+        for(int i = 0; i < coloredPoint.Count; i++)
         {
-            firstNumber = combination[0];
-        }
-        else
-        {
-            isExist = false;
-        }
-
-        for(int i = 0; i < combination.Count; i++)
-        { 
-            if(firstNumber != combination[i])
-            {
-                isExist = false;
+            Vector2 tempChunkVector = new Vector2(sideTile(coloredPoint[i], out error).transform.parent.GetComponent<TileChunkComponents>().pos.x, sideTile(coloredPoint[i], out error).transform.parent.GetComponent<TileChunkComponents>().pos.y);
+            Vector2 tempTileVector = new Vector2(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.x, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.y);
+            if (tileManagement.wholeTiles.chunks[(int)tempChunkVector.x][(int)tempChunkVector.y].tiles[(int)tempTileVector.x * 2 + (int)tempTileVector.y].isDestroyed == true){
+                result = result && false;
             }
         }
 
-        return isExist;
+        return result;
     }
 
+    public List<string> combo(List<tileInfo> combination, int tileNumber)
+    {
+        List<string> result = new List<string>();
+
+        if (pair(combination, tileNumber))
+        {
+            switch (tileNumber)
+            {
+                case 2: result.Add("onepair"); break;
+                case 3: result.Add("triple"); break;
+                case 4: result.Add("fourcard"); break;
+                case 5: result.Add("fivecard"); break;
+            }
+        }
+        if(flush(combination, tileNumber))
+        {
+            result.Add("flush" + tileNumber.ToString());
+        }
+        if(straight(combination, tileNumber))
+        {
+            result.Add("straight" + tileNumber.ToString());
+        }
+        if (straightFlush(combination, tileNumber))
+        {
+            result.Add("straightflush" + tileNumber.ToString());
+        }            
+
+        return result;
+    }
+
+    
+    bool pair(List<tileInfo> list, int count)
+    {
+        bool result = true;
+
+        for(int i = 0; i < count - 1; i++)
+        {
+            result = result && (list[i].number == list[i + 1].number);
+        }
+
+        return result;
+    }
+    bool flush(List<tileInfo> list, int count)
+    {
+        bool result = true;
+
+        for (int i = 0; i < count - 1; i++)
+        {
+            result = result && (list[i].color == list[i + 1].color);
+        }
+
+        return result;
+    }
+    bool straight(List<tileInfo> list, int count)
+    {
+        List<int> sortedList = new List<int>();
+        for(int i = 0; i < list.Count; i++)
+        {
+            sortedList.Add(list[i].number);
+        }
+        sortedList.Sort();
+
+        bool result = true;
+
+        for(int i = 0; i < count - 1; i++)
+        {
+            result = result && (sortedList[i] + 1 == sortedList[i + 1]);
+        }
+
+        return result;
+    }
+    bool straightFlush(List<tileInfo> list, int count)
+    {
+        return flush(list, count) && straight(list, count);
+    }
+
+    /*
+    bool twoPair(int n1, int n2, int n3, int n4)
+    {
+        List<int> sortedList = new List<int>();
+        sortedList.Add(n1); sortedList.Add(n2); sortedList.Add(n3); sortedList.Add(n4);
+        sortedList.Sort();
+
+        if (sortedList[0] == sortedList[1] && sortedList[2] == sortedList[3])
+            return true;
+        else
+            return false;
+    }
+
+    bool fullHouse(List<tileInfo> list)
+    {
+        List<tileInfo> sortedList = new List<tileInfo>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            sortedList.Add(list[i]);
+        }
+        sortedList = sortedList.OrderBy(p => p.number).ToList();
+
+        if (triple(sortedList[0].number, sortedList[1].number, sortedList[2].number) && onePair(sortedList[3].number, sortedList[4].number)){
+            return true;
+        }
+        else if (triple(sortedList[2].number, sortedList[3].number, sortedList[4].number) && onePair(sortedList[0].number, sortedList[1].number) )
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+    */
     public GameObject sideTile(Vector2 frameTilePos, out int error)
     {
         error = 0;
@@ -163,7 +280,6 @@ public class FrameComponents : MonoBehaviour
 
         return nowTile;
     }
-
 
 }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class FrameSummoner : MonoBehaviour
 {
     public GameObject frame;
     public Canvas canvas;
+    public StampDatas stampData;
 
     GraphicRaycaster raycaster;
     PointerEventData pointerEventData;
@@ -26,6 +28,10 @@ public class FrameSummoner : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             clicking();
+        }
+        else if(Input.GetMouseButtonDown(1))
+        {
+            canceling();
         }
     }
 
@@ -83,5 +89,10 @@ public class FrameSummoner : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void canceling()
+    {
+        frame.GetComponent<FrameComponents>().isActivate = false;
     }
 }

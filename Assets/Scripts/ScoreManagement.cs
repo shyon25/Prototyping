@@ -9,15 +9,23 @@ public class ScoreManagement : MonoBehaviour
     public GameObject resetButton;
     public int initialResetNumber;
     public TMP_Text scoreText;
+    public TMP_Text goalText;
+    public LoadClearScene loadClearScene;
 
-    List<earnedBlock> earnedBlocks;
+    public List<string> earnedText;
+    public List<string> goals;
+    public List<int> completeCounter;
 
     private void Start()
     {
         resetButton.transform.GetChild(1).GetComponent<TMP_Text>().text = initialResetNumber.ToString();
-        earnedBlocks = new List<earnedBlock>();
         scoreText = this.gameObject.transform.GetChild(0).GetComponent<TMP_Text>();
+        goalText = this.gameObject.transform.GetChild(1).GetComponent<TMP_Text>();
         scoreText.text = "";
+        earnedText = new List<string>();
+        goals = new List<string>();
+        completeCounter = new List<int>(); completeCounter.Add(0); completeCounter.Add(0); completeCounter.Add(0); completeCounter.Add(0);
+        goalInitializing();
     }
 
     public void useReset()
@@ -29,47 +37,129 @@ public class ScoreManagement : MonoBehaviour
         }
     }
 
-    public void addBlock(Color color, int number, int count)
+    public void addBlock(List<string> combo)
     {
-        earnedBlocks.Add(new earnedBlock(color, number, count));
+        if(combo.Count > 0)
+        {
+            for(int i = 0; i < combo.Count; i++)
+            {
+                earnedText.Add(combo[i]);
+            }
+        }
         recordBlock();
     }
 
     void recordBlock()
     {
         scoreText.text = "";
-        if(earnedBlocks.Count > 0)
+        if(earnedText.Count > 0)
         {
-            for(int i = 0; i < earnedBlocks.Count; i++)
+            for(int i = 0; i < earnedText.Count; i++)
             {
-                scoreText.text += earnedBlocks[i].count.ToString() + namedColor(earnedBlocks[i].color) + earnedBlocks[i].number.ToString() + " ";
+                scoreText.text += earnedText[i] + " ";
             }
+        }
+        refreshScore();
+    }
+
+    public void goalInitializing()
+    {
+        int dice = 0;
+
+        for(int i = 2; i < 6; i++)
+        {
+            dice = Random.Range(1, 5);
+            if (dice == 1)
+            {
+                if (i == 2)
+                    goals.Add("onepair");
+                else if (i == 3)
+                    goals.Add("triple");
+                else if (i == 4)
+                    goals.Add("fourcard");
+                else if (i == 5)
+                    goals.Add("fivecard");
+            }
+            else if (dice == 2)
+            {
+                if (i == 2)
+                    goals.Add("flush2");
+                else if (i == 3)
+                    goals.Add("flush3");
+                else if (i == 4)
+                    goals.Add("flush4");
+                else if (i == 5)
+                    goals.Add("flush5");
+            }
+            else if (dice == 3)
+            {
+                if (i == 2)
+                    goals.Add("straight2");
+                else if (i == 3)
+                    goals.Add("straight3");
+                else if (i == 4)
+                    goals.Add("straight4");
+                else if (i == 5)
+                    goals.Add("straight5");
+            }
+            else if (dice == 4)
+            {
+                if (i == 2)
+                    goals.Add("straightflush2");
+                else if (i == 3)
+                    goals.Add("straightflush3");
+                else if (i == 4)
+                    goals.Add("straightflush4");
+                else if (i == 5)
+                    goals.Add("straightflush5");
+            }
+        }
+
+        refreshScore();
+    }
+
+    public void refreshScore()
+    {
+        goalText.text = "";
+        for (int i = 0; i < goals.Count; i++)
+        {
+            goalText.text += goals[i] + "(" + howmanyContain(earnedText, goals[i], i) + " / " + howmuchFind(i) + ")" + "\n";
+        }
+        if (completeCounter[0] * completeCounter[1] * completeCounter[2] * completeCounter[3] == 1)
+        {
+            loadClearScene.loadClearScene();
         }
     }
 
-    string namedColor(Color color)
+    int howmanyContain(List<string> list, string element, int index)
     {
-        string result = "";
+        int sum = 0;
 
-        if(color == Color.red)
+        for(int i = 0; i<list.Count; i++)
         {
-            result = "R";
+            if (list[i] == element)
+                sum += 1;
         }
-        else if(color == Color.green)
+
+        if(sum >= howmuchFind(index))
         {
-            result = "G";
+            sum = howmuchFind(index);
+            completeCounter[index] = 1;
         }
-        else if(color == Color.blue)
+
+        return sum;
+    }
+
+    int howmuchFind(int goal)
+    {
+        int result = 0;
+
+        switch (goal)
         {
-            result = "B";
-        }
-        else if(color == Color.yellow)
-        {
-            result = "Y";
-        }
-        else if(color == Color.white)
-        {
-            result = "W";
+            case 0: result = 3; break;
+            case 1: result = 2; break;
+            case 2: result = 2; break;
+            case 3: result = 1; break;
         }
 
         return result;
@@ -77,16 +167,3 @@ public class ScoreManagement : MonoBehaviour
 
 }
 
-public class earnedBlock
-{
-    public Color color;
-    public int number;
-    public int count;
-
-    public earnedBlock(Color c, int n, int t)
-    {
-        color = c;
-        number = n;
-        count = t;
-    }
-}
