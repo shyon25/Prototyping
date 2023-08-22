@@ -6,8 +6,12 @@ using UnityEngine.UI;
 
 public class ScoreManagement : MonoBehaviour
 {
+    public List<int> goalCounts;
+
     public GameObject resetButton;
     public int initialResetNumber;
+    public GameObject fillButton;
+    public int initialFillNumber;
     public TMP_Text scoreText;
     public TMP_Text goalText;
     public LoadClearScene loadClearScene;
@@ -19,6 +23,7 @@ public class ScoreManagement : MonoBehaviour
     private void Start()
     {
         resetButton.transform.GetChild(1).GetComponent<TMP_Text>().text = initialResetNumber.ToString();
+        fillButton.transform.GetChild(1).GetComponent<TMP_Text>().text = initialFillNumber.ToString();
         scoreText = this.gameObject.transform.GetChild(0).GetComponent<TMP_Text>();
         goalText = this.gameObject.transform.GetChild(1).GetComponent<TMP_Text>();
         scoreText.text = "";
@@ -34,6 +39,15 @@ public class ScoreManagement : MonoBehaviour
         {
             initialResetNumber -= 1;
             resetButton.transform.GetChild(1).GetComponent<TMP_Text>().text = initialResetNumber.ToString();
+        }
+    }
+
+    public void useFill()
+    {
+        if (initialFillNumber > 0)
+        {
+            initialFillNumber -= 1;
+            fillButton.transform.GetChild(1).GetComponent<TMP_Text>().text = initialFillNumber.ToString();
         }
     }
 
@@ -56,7 +70,7 @@ public class ScoreManagement : MonoBehaviour
         {
             for(int i = 0; i < earnedText.Count; i++)
             {
-                scoreText.text += earnedText[i] + " ";
+                //scoreText.text += earnedText[i] + " ";
             }
         }
         refreshScore();
@@ -154,13 +168,17 @@ public class ScoreManagement : MonoBehaviour
     {
         int result = 0;
 
+        result = goalCounts[goal];
+
+        /*
         switch (goal)
         {
-            case 0: result = 3; break;
-            case 1: result = 2; break;
-            case 2: result = 2; break;
-            case 3: result = 1; break;
+            case 0: result = 10; break;
+            case 1: result = 5; break;
+            case 2: result = 5; break;
+            case 3: result = 3; break;
         }
+        */
 
         return result;
     }

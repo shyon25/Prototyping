@@ -33,6 +33,8 @@ public class TileChunkComponents : MonoBehaviour
         newTiles.Add(myChunk.tiles[3]);
         newTiles.Add(myChunk.tiles[1]);
         myChunk.tiles = newTiles;
+        Color transparent = Color.black;
+        transparent.a = 0f;
 
         myChunkObject = myChunk.findMyChunk();
 
@@ -44,11 +46,15 @@ public class TileChunkComponents : MonoBehaviour
             myChunkObject.transform.GetChild(i).GetComponent<Image>().color = newTiles[i].color;
             if (myChunk.tiles[i].isDestroyed == false)
             {
-                myChunkObject.transform.GetChild(i).gameObject.SetActive(true);
+                //myChunkObject.transform.GetChild(i).gameObject.SetActive(true);
+                myChunkObject.transform.GetChild(i).transform.GetChild(0).GetComponent<TMP_Text>().color = Color.black;
+                myChunkObject.transform.GetChild(i).GetComponent<Image>().color = myChunkObject.transform.GetChild(i).GetComponent<TileComponents>().color;
             }
             else
             {
-                myChunkObject.transform.GetChild(i).gameObject.SetActive(false);
+                //myChunkObject.transform.GetChild(i).gameObject.SetActive(false);
+                myChunkObject.transform.GetChild(i).transform.GetChild(0).GetComponent<TMP_Text>().color = transparent;
+                myChunkObject.transform.GetChild(i).GetComponent<Image>().color = transparent;
             }
         }
 

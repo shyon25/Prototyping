@@ -145,10 +145,13 @@ public class TilesManagement : MonoBehaviour
     {
         tileChunk currentChunk = wholeTiles.chunks[(int)chunkPos.x][(int)chunkPos.y];
         tile currentTile = currentChunk.getTile((int)(tilePos.x * 2 + tilePos.y));
+        Color transparentColor = currentTile.color;
 
         currentTile.isDestroyed = true;
-        currentChunk.findMyChunk().transform.GetChild((int)(tilePos.x * 2 + tilePos.y)).gameObject.SetActive(false);
-
+        //currentChunk.findMyChunk().transform.GetChild((int)(tilePos.x * 2 + tilePos.y)).gameObject.SetActive(false);
+        transparentColor.a = 0f;
+        currentChunk.findMyChunk().transform.GetChild((int)(tilePos.x * 2 + tilePos.y)).gameObject.GetComponent<Image>().color = transparentColor;
+        currentChunk.findMyChunk().transform.GetChild((int)(tilePos.x * 2 + tilePos.y)).GetChild(0).GetComponent<TMP_Text>().color = transparentColor;
     }
 
     public void drawTile(int row, int column)
@@ -238,25 +241,32 @@ public class TilesManagement : MonoBehaviour
 
     public void fillTiles()
     {
-        for(int i = 0; i< wholeTiles.chunks.Count; i++)
+        if (scoreManagement.initialFillNumber > 0)
         {
-            for(int j = 0; j < wholeTiles.chunks[i].Count; j++)
+            for (int i = 0; i < wholeTiles.chunks.Count; i++)
             {
-                for (int k = 0; k < wholeTiles.chunks[i][j].tiles.Count; k++)
+                for (int j = 0; j < wholeTiles.chunks[i].Count; j++)
                 {
-                    if (wholeTiles.chunks[i][j].tiles[k].isDestroyed == true)
+                    for (int k = 0; k < wholeTiles.chunks[i][j].tiles.Count; k++)
                     {
-                        wholeTiles.chunks[i][j].tiles[k].isDestroyed = false;
-                        wholeTiles.chunks[i][j].tiles[k].number = Random.Range(1, 6);
-                        wholeTiles.chunks[i][j].tiles[k].color = randomColor();
+                        if (wholeTiles.chunks[i][j].tiles[k].isDestroyed == true)
+                        {
+                            wholeTiles.chunks[i][j].tiles[k].isDestroyed = false;
+                            wholeTiles.chunks[i][j].tiles[k].number = Random.Range(1, 6);
+                            wholeTiles.chunks[i][j].tiles[k].color = randomColor();
 
-                        wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).gameObject.SetActive(true);
-                        wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetChild(0).GetComponent<TMP_Text>().text = wholeTiles.chunks[i][j].tiles[k].number.ToString();
-                        wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetComponent<Image>().color = wholeTiles.chunks[i][j].tiles[k].color;
+                            //wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).gameObject.SetActive(true);
+                            wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetComponent<TileComponents>().number = wholeTiles.chunks[i][j].tiles[k].number;
+                            wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetChild(0).GetComponent<TMP_Text>().text = wholeTiles.chunks[i][j].tiles[k].number.ToString();
+                            wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetChild(0).GetComponent<TMP_Text>().color = Color.black;
+                            wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetComponent<TileComponents>().color = wholeTiles.chunks[i][j].tiles[k].color;
+                            wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetComponent<Image>().color = wholeTiles.chunks[i][j].tiles[k].color;
 
+                        }
                     }
                 }
             }
+            scoreManagement.useFill();
         }
     }
 

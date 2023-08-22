@@ -10,14 +10,21 @@ public class StampDatas : MonoBehaviour
     public GameObject frame;
     public Color color;
     public int myStampNumber;
+    public GameObject frameImage;
 
     int randomPointx, randomPointy;
 
     private void Start()
     {
+        changeColoredPoint();
+        color = randomColor();
+    }
+
+    public void changeColoredPoint()
+    {
         Vector2 tempPoint;
         coloredPoint = new List<Vector2>();
-        for(int i = 0; i<number; i++)
+        for (int i = 0; i < number; i++)
         {
             do
             {
@@ -27,11 +34,13 @@ public class StampDatas : MonoBehaviour
             } while (coloredPoint.Contains(tempPoint));
             coloredPoint.Add(tempPoint);
         }
-        color = randomColor();
+        frameImage.GetComponent<FrameComponents>().changeColors(coloredPoint, color);
     }
+
 
     public void changeFrame()
     {
+        frame.GetComponent<FrameComponents>().partnerStampButton = this.gameObject;
         if(myStampNumber == frame.GetComponent<FrameComponents>().currentStampNumber)
         {
             offFrame();
@@ -56,6 +65,10 @@ public class StampDatas : MonoBehaviour
         frame.GetComponent<FrameComponents>().currentStampNumber = myStampNumber;
         frame.GetComponent<FrameComponents>().coloredPoint = coloredPoint;
         frame.GetComponent<FrameComponents>().changeColors(coloredPoint, color);
+
+        frameImage.GetComponent<FrameComponents>().currentStampNumber = myStampNumber;
+        frameImage.GetComponent<FrameComponents>().coloredPoint = coloredPoint;
+        frameImage.GetComponent<FrameComponents>().changeColors(coloredPoint, color);
     }
 
     public Color randomColor()

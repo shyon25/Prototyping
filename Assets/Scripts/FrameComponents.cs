@@ -30,6 +30,7 @@ public class FrameComponents : MonoBehaviour
     public Color currentColor;
     public TilesManagement tileManagement;
     public ScoreManagement scoreManagement;
+    public GameObject partnerStampButton;
 
     List<List<GameObject>> frameTiles;
     private void Start()
@@ -121,7 +122,8 @@ public class FrameComponents : MonoBehaviour
                     Vector2 tempTileVector = new Vector2(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.x, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().pos.y);
                     tileManagement.destroyTiles(tempChunkVector, tempTileVector);
                 }
-                
+                partnerStampButton.GetComponent<StampDatas>().changeColoredPoint();
+                partnerStampButton.GetComponent<StampDatas>().switchFrame();
             }
         }
         
