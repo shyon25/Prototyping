@@ -17,10 +17,28 @@ public class TileChunkComponents : MonoBehaviour
     public Vector2 pos;
     public Color color;
 
+    public AudioSource audioSource;
+    public AudioClip swap;
+    public AudioClip click;
+
     private void Start()
     {
         selected = false;
         tileManager = GameObject.Find("TileZone").GetComponent<TilesManagement>();
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
+    }
+
+    void playSwap()
+    {
+        audioSource.clip = swap;
+        audioSource.Play();
+    }
+    void playClick()
+    {
+        audioSource.clip = click;
+        audioSource.Play();
     }
 
     public void rotateTiles()
@@ -44,6 +62,7 @@ public class TileChunkComponents : MonoBehaviour
             myChunkObject.transform.GetChild(i).transform.GetChild(0).GetComponent<TMP_Text>().text = newTiles[i].number.ToString();
             myChunkObject.transform.GetChild(i).GetComponent<TileComponents>().color = newTiles[i].color;
             myChunkObject.transform.GetChild(i).GetComponent<Image>().color = newTiles[i].color;
+            myChunkObject.transform.GetChild(i).GetComponent<TileComponents>().isDestroyed = newTiles[i].isDestroyed;
             if (myChunk.tiles[i].isDestroyed == false)
             {
                 //myChunkObject.transform.GetChild(i).gameObject.SetActive(true);
@@ -66,6 +85,7 @@ public class TileChunkComponents : MonoBehaviour
             selected = true;
             this.GetComponent<RectTransform>().offsetMax = new Vector2(-10, -10);
             this.GetComponent<RectTransform>().offsetMin = new Vector2(10, 10);
+            playClick();
         }
         
     }
@@ -77,6 +97,7 @@ public class TileChunkComponents : MonoBehaviour
             selected = false;
             this.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
             this.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+            playSwap();
         }
     }
 

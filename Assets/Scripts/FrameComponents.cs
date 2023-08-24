@@ -10,11 +10,13 @@ public class tileInfo
 {
     public int number;
     public Color color;
+    public bool isDestroyed;
 
-    public tileInfo(int n, Color c)
+    public tileInfo(int n, Color c, bool d)
     {
         number = n;
         color = c;
+        isDestroyed = d;
     }
 }
 
@@ -31,6 +33,10 @@ public class FrameComponents : MonoBehaviour
     public TilesManagement tileManagement;
     public ScoreManagement scoreManagement;
     public GameObject partnerStampButton;
+
+    public AudioSource audioSource;
+    public AudioClip success;
+    public AudioClip fail;
 
     List<List<GameObject>> frameTiles;
     private void Start()
@@ -107,10 +113,10 @@ public class FrameComponents : MonoBehaviour
 
             for (int i = 0; i < coloredPoint.Count; i++)
             {
-                combination.Add(new tileInfo(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().number, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().color));
+                combination.Add(new tileInfo(sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().number, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().color, sideTile(coloredPoint[i], out error).GetComponent<TileComponents>().isDestroyed));
             }
 
-            if (combo(combination, coloredPoint.Count).Count != 0)
+            if (combo(combination, coloredPoint.Count).Count != 0 && isEnable(combination))
             {
                 if (canIRecord())
                 {
@@ -124,9 +130,34 @@ public class FrameComponents : MonoBehaviour
                 }
                 partnerStampButton.GetComponent<StampDatas>().changeColoredPoint();
                 partnerStampButton.GetComponent<StampDatas>().switchFrame();
+                playEffect(success);
+            }
+            else
+            {
+                playEffect(fail);
             }
         }
         
+    }
+    bool isEnable(List<tileInfo> combination)
+    {
+        bool result = true;
+
+        foreach (tileInfo tileInfo in combination)
+        {
+            if(tileInfo.isDestroyed == true)
+            {
+                result = result && false; break;
+            }
+        }
+
+        return result;
+    }
+
+    void playEffect(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 
     public bool canIRecord()

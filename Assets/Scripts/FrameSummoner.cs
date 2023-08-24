@@ -11,6 +11,10 @@ public class FrameSummoner : MonoBehaviour
     public Canvas canvas;
     public StampDatas stampData;
 
+    public AudioSource audioSource;
+    public AudioClip cancelFrame;
+    public AudioClip click;
+
     GraphicRaycaster raycaster;
     PointerEventData pointerEventData;
 
@@ -94,5 +98,12 @@ public class FrameSummoner : MonoBehaviour
     public void canceling()
     {
         frame.GetComponent<FrameComponents>().isActivate = false;
+        playEffect(cancelFrame);
+    }
+
+    void playEffect(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 }

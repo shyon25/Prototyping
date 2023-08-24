@@ -11,5 +11,10 @@ public class TileComponents : MonoBehaviour
     public Vector2 pos;
     public int number;
     public Color color;
+    public bool isDestroyed;
 
+    public TileComponents()
+    {
+        isDestroyed = false;
+    }
 }

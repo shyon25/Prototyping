@@ -112,7 +112,7 @@ public class TilesManagement : MonoBehaviour
                 tempChunk.anchorMin = new Vector2(i * (1f / row), j * (1f / row));
                 tempChunk.name = "TileChunk" + i + j;
                 tempChunk.pos = new Vector2(i, j);
-                tempChunk.color = Color.gray;
+                tempChunk.color = Color.white;
 
                 for (int k = 0; k < 2; k++)
                 {
@@ -152,6 +152,7 @@ public class TilesManagement : MonoBehaviour
         transparentColor.a = 0f;
         currentChunk.findMyChunk().transform.GetChild((int)(tilePos.x * 2 + tilePos.y)).gameObject.GetComponent<Image>().color = transparentColor;
         currentChunk.findMyChunk().transform.GetChild((int)(tilePos.x * 2 + tilePos.y)).GetChild(0).GetComponent<TMP_Text>().color = transparentColor;
+        currentChunk.findMyChunk().transform.GetChild((int)(tilePos.x * 2 + tilePos.y)).gameObject.GetComponent<TileComponents>().isDestroyed = true;
     }
 
     public void drawTile(int row, int column)
@@ -261,7 +262,7 @@ public class TilesManagement : MonoBehaviour
                             wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetChild(0).GetComponent<TMP_Text>().color = Color.black;
                             wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetComponent<TileComponents>().color = wholeTiles.chunks[i][j].tiles[k].color;
                             wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetComponent<Image>().color = wholeTiles.chunks[i][j].tiles[k].color;
-
+                            wholeTiles.chunks[i][j].findMyChunk().transform.GetChild(k).GetComponent<TileComponents>().isDestroyed = false;
                         }
                     }
                 }
