@@ -92,6 +92,7 @@ public class TilesManagement : MonoBehaviour
     public int maxNum;
     public GameObject selectingFrame;
     public ScoreManagement scoreManagement;
+    public List<StampDatas> stampDatas;
 
     void Start()
     {
@@ -99,7 +100,17 @@ public class TilesManagement : MonoBehaviour
         selectingFrame.SetActive(false);
         tileInitialize(4, 4);
         drawTile(4, 4);
+        //stampInitialize();
     }
+
+    public void stampInitialize()
+    {
+        for(int i = 0; i < stampDatas.Count; i++)
+        {
+            stampDatas[i].changeColoredPoint();
+        }
+    }
+
 
     public void tileInitialize(int row, int column)
     {

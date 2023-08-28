@@ -39,7 +39,7 @@ public class FrameComponents : MonoBehaviour
     public AudioClip fail;
 
     List<List<GameObject>> frameTiles;
-    private void Start()
+    private void Awake()
     {
         frameTiles = new List<List<GameObject>>();
 
